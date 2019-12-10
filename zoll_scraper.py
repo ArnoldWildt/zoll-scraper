@@ -29,4 +29,4 @@ while not overtime:
 
 
 print(len(product_list))
-print(product_list[-1].time_till_end)
+print(product_list[-1].print_info())

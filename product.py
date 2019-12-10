@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 
+MAIN_URL = "https://www.zoll-auktion.de"
 
 class Product:
     def __init__(self, soup_tab):
@@ -24,6 +25,19 @@ class Product:
         location_list = soup_tab.find("td", class_="artikelstandort").find_all("div")
         self.location = " ".join([_.text for _ in location_list])
 
+        self.dict = {
+            "$href": MAIN_URL + self.href,
+            "$picture": MAIN_URL + self.pic_link,
+            "$name": self.name,
+            "$plz": self.location.split(" ")[0],
+            "$location": self.location.split(" ")[1],
+            "$price": self.price,
+            "$bids": self.bids,
+            "$end_time": self.end_date,
+            "$icon": "TO DO",
+            "$link": "https://www.google.com/search?q=" + self.name.replace(" ", "+"),
+        }
+
     def print_info(self):
         print(f"Name: {self.name}")
         print(f"Href: {self.href}")
@@ -34,3 +48,5 @@ class Product:
         print(f"Time till end: {self.time_till_end}")
         print(f"End date: {self.end_date}")
         print(f"Location: {self.location}")
+
+
