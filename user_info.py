@@ -1,6 +1,7 @@
 users_filename = "users_file.txt"
 user_list = []
 
+
 class User:
     def __init__(self, name, email, distance):
 
@@ -14,6 +15,7 @@ class User:
             Email: {self.email}
             Distance: {self.distance}
         """)
+
 
 def get_users():
     print("Get Users")

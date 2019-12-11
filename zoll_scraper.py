@@ -30,9 +30,11 @@ while not overtime:
     page_counter += 1
 
 print(f"Got {len(product_list)} products.")
-users = get_users()
 
 email_service = Email_util()
-email_service.send_mail(users[0], product_list)
 
+users = get_users()
 
+for user in users:
+    email_content = email_service.get_email_content(user, product_list)
+    email_service.send_mail(user, email_content)

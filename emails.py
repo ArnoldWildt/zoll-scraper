@@ -12,56 +12,52 @@ today = date.today()
 with open("credentials.txt", "r") as credits_file:
     User = credits_file.readline()
     Pass = credits_file.readline()
-    print(User)
+    print(User[:-1])
     print(Pass)
 
 
 def find_replace_multi(string, dictionary):
-    for item in dictionary.keys():
-        # sub item for item's paired value in string
-        string = re.sub(item, dictionary[item], string)
+    for key, val in dictionary.items():
+        string = string.replace(key, val)
     return string
 
 
 class Email_util:
     def __init__(self):
-        print("Email Util")
         with open("html/html_top.html", "r") as reader:
             self.html_top = reader.read()
 
         with open("html/content.html", "r") as reader:
             self.html_content = reader.read()
 
-        self.html_end = "</body></html>"
+        self.html_end = "</table></body></html>"
         self.context = ssl.create_default_context()
 
-    def send_mail(self, receiver, product_list):
-        print("Start sent mail")
+    def get_email_content(self, receiver, product_list):
+
         msg = MIMEMultipart('alternative')
-        msg["Subject"] = f"Zoll Scraper links - {today}"
+        msg["Subject"] = f"Zoll Scraper links {today}"
         msg["From"] = "Zoll Scraper"
-        msg["To"] = "######"# receiver.email
+        msg["To"] = receiver.email
 
-        text_msg = f"Hallo ######" # {receiver.name},"
-
+        text_msg = f"Hallo {receiver.name},"
         msg.attach(MIMEText(text_msg, "plain"))
-        msg.attach(MIMEText(self.html_top, "html"))
+
+        html_email_content = self.html_top
 
         for product in product_list:
             product_cont = find_replace_multi(self.html_content, product.dict)
-            #msg.attach(MIMEText(product_cont, "html"))
-        print("Replaceed content")
+            html_email_content += product_cont
 
-        msg.attach(MIMEText(self.html_end, "html"))#
+        html_email_content += self.html_end
+        msg.attach(MIMEText(html_email_content, "html"))
 
-        print("start smtp")
-        with smtplib.SMTP_SSL("smtp.gmail.com", PORT, context=self.context) as server:
+        return msg
+
+    def send_mail(self, receiver, msg):
+        with smtplib.SMTP_SSL("smtp.gmail.com", PORT,
+                              context=self.context) as server:
             server.login(User, Pass)
-            print("Login")
-            server.sendmail(User, "###########", msg)# receiver, msg)
+            server.sendmail(User, receiver.email, msg.as_string())
 
-            print(f"Sent EMail to {receiver}")
-
-
-# a = Email_util()
-# print(a.html_content)
+            print(f"Sent EMail to {receiver.email}")

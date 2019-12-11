@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
-MAIN_URL = "https://www.zoll-auktion.de"
-shipping_icon = '<img src="https://image.flaticon.com/icons/svg/411/411763.svg">'
+MAIN_URL = "https://www.zoll-auktion.de/"
+
 
 class Product:
     def __init__(self, soup_tab):
@@ -26,18 +26,17 @@ class Product:
         location_list = soup_tab.find("td", class_="artikelstandort").find_all("div")
         self.location = " ".join([_.text for _ in location_list])
 
-
-        self.icon = "X"
+        self.icon = "❌"
 
         if self.shipping:
-            self.icon = shipping_icon
+            self.icon = "✔"
 
         self.dict = {
             "$href": MAIN_URL + self.href,
             "$picture": MAIN_URL + self.pic_link,
             "$name": self.name,
             "$plz": self.location.split(" ")[0],
-            "$location": self.location.split(" ")[1],
+            "$location": " ".join(self.location.split(" ")[1:]),
             "$price": self.price,
             "$bids": self.bids,
             "$end_time": self.end_date,
