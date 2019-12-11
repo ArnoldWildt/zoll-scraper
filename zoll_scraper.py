@@ -1,8 +1,10 @@
 from urllib import request
 from bs4 import BeautifulSoup
 from product import Product
+from emails import Email_util
+from user_info import get_users
 
-MAIN_URL = "https://www.zoll-auktion.de"
+MAIN_URL = "https://www.zoll-auktion.de/"
 URL = "https://www.zoll-auktion.de/auktion/auktionsuebersicht.php?seite="
 
 overtime = False
@@ -27,6 +29,10 @@ while not overtime:
 
     page_counter += 1
 
+print(f"Got {len(product_list)} products.")
+users = get_users()
 
-print(len(product_list))
-print(product_list[-1].print_info())
+email_service = Email_util()
+email_service.send_mail(users[0], product_list)
+
+

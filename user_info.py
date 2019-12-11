@@ -16,7 +16,7 @@ class User:
         """)
 
 def get_users():
-
+    print("Get Users")
     with open(users_filename) as users_file:
         users = users_file.readlines()
 
