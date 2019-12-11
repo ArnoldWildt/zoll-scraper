@@ -7,34 +7,39 @@ from user_info import get_users
 MAIN_URL = "https://www.zoll-auktion.de/"
 URL = "https://www.zoll-auktion.de/auktion/auktionsuebersicht.php?seite="
 
-overtime = False
-page_counter = 1
-product_list = []
 
-while not overtime:
+def scrap_zoll():
 
-    content = request.urlopen(URL + str(page_counter))
+    overtime = False
+    page_counter = 1
+    product_list = []
 
-    soup = BeautifulSoup(content)
+    while not overtime:
 
-    bgw_tab = soup.find_all("tr", class_="bgw_tab")
-    bgg_tab = soup.find_all("tr", class_="bgg_tab")
+        content = request.urlopen(URL + str(page_counter))
 
-    for _ in [*bgw_tab, *bgg_tab]:
-        product_obj = Product(_)
-        product_list.append(product_obj)
+        soup = BeautifulSoup(content)
 
-        if "T." in product_obj.time_till_end:
-            overtime = True
+        bgw_tab = soup.find_all("tr", class_="bgw_tab")
+        bgg_tab = soup.find_all("tr", class_="bgg_tab")
 
-    page_counter += 1
+        for _ in [*bgw_tab, *bgg_tab]:
+            product_obj = Product(_)
+            product_list.append(product_obj)
 
-print(f"Got {len(product_list)} products.")
+            if "T." in product_obj.time_till_end:
+                overtime = True
 
-email_service = Email_util()
+        page_counter += 1
 
-users = get_users()
+    print(f"Got {len(product_list)} products.")
 
-for user in users:
-    email_content = email_service.get_email_content(user, product_list)
-    email_service.send_mail(user, email_content)
+    email_service = Email_util()
+
+    users = get_users()
+
+    print(users)
+
+    for user in users:
+        email_content = email_service.get_email_content(user, product_list)
+        email_service.send_mail(user, email_content)

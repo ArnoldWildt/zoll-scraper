@@ -1,6 +1,4 @@
 users_filename = "users_file.txt"
-user_list = []
-
 
 class User:
     def __init__(self, name, email, distance):
@@ -18,7 +16,9 @@ class User:
 
 
 def get_users():
-    print("Get Users")
+
+    user_list = []
+    
     with open(users_filename) as users_file:
         users = users_file.readlines()
 
