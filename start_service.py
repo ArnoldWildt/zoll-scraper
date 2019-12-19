@@ -1,12 +1,9 @@
 from zoll_scraper import scrap_zoll
-from timeloop import Timeloop
-from datetime import timedelta
+import schedule
+import time
 import sys
 
-tl = Timeloop()
 
-
-@tl.job(interval=timedelta(hours=12))
 def execute_service():
     try:
         scrap_zoll()
@@ -14,5 +11,12 @@ def execute_service():
         print("Unexpected error:", sys.exc_info()[0])
 
 
+schedule.every().day.at("06:00").do(execute_service)
+schedule.every().day.at("11:45").do(execute_service)
+schedule.every().day.at("19:00").do(execute_service)
+
+
 if __name__ == "__main__":
-    tl.start(block=True)
+    while True:
+        time.sleep(60)
+        schedule.run_pending()
