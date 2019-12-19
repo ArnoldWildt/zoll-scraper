@@ -17,6 +17,7 @@ schedule.every().day.at("19:00").do(execute_service)
 
 
 if __name__ == "__main__":
+    print("Starting Service!")
     while True:
         time.sleep(60)
         schedule.run_pending()
