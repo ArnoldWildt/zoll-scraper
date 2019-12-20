@@ -32,8 +32,8 @@ class Product:
             self.icon = "✔"
 
         self.dict = {
-            "$href": MAIN_URL + self.href,
-            "$picture": MAIN_URL + "auktion/" + self.pic_link,
+            "$href": MAIN_URL + "auktion/" + self.href,
+            "$picture": MAIN_URL + self.pic_link,
             "$name": self.name,
             "$plz": self.location.split(" ")[0],
             "$location": " ".join(self.location.split(" ")[1:]),
