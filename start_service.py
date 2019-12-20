@@ -11,9 +11,9 @@ def execute_service():
         print("Unexpected error:", sys.exc_info()[0])
 
 
-schedule.every().day.at("06:00").do(execute_service)
-schedule.every().day.at("11:45").do(execute_service)
-schedule.every().day.at("19:00").do(execute_service)
+schedule.every().day.at("05:00").do(execute_service)
+schedule.every().day.at("10:45").do(execute_service)
+schedule.every().day.at("18:00").do(execute_service)
 
 
 if __name__ == "__main__":
