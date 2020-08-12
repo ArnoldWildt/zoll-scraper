@@ -7,7 +7,6 @@ from user_info import get_users
 import re
 
 PORT = 465
-today = date.today()
 
 with open("credentials.txt", "r") as credits_file:
     User = credits_file.readline()
@@ -34,7 +33,7 @@ class Email_util:
         self.context = ssl.create_default_context()
 
     def get_email_content(self, receiver, product_list):
-
+        today = date.today()
         msg = MIMEMultipart('alternative')
         msg["Subject"] = f"Zoll Scraper links {today}"
         msg["From"] = "Zoll Scraper"
